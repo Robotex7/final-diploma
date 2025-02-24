@@ -1,26 +1,24 @@
 import { useState } from "react";
-import {Seat} from "./Seat/Seat";
-
-import classes from "./map.module.css";
+import { Seat } from "../Seat/Seat";
+import classes from"./first.module.css";
 
 interface Price {
-    top?: number;
-    bottom?: number;
-  }
+  standard?: number; // Цена для люкса и четвертого класса
+}
 
-interface ThirdClassProps {
+interface FirstClassMapProps {
   seats: { index: number; available: boolean }[] | undefined;
   isAdult: boolean;
   coach_id: string;
-  price: Price;
   directionType: "туда" | "обратно";
+  price: Price;
+  coach_name?: string;
 }
 
-export const ThirdClass: React.FC<ThirdClassProps> = ({ seats, isAdult, coach_id, directionType, price }) => {
+export const FirstClassMap: React.FC<FirstClassMapProps> = ({ seats, isAdult, coach_id, directionType, price, coach_name }) => {
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
 
-  // Генерация полного списка мест
-  const allSeats = Array.from({ length: 54 }, (_, i) => ({
+  const allSeats = Array.from({ length: 18 }, (_, i) => ({
     index: i + 1,
     available: seats?.some((seat) => seat.index === i + 1 && seat.available) || false,
   }));
@@ -32,21 +30,26 @@ export const ThirdClass: React.FC<ThirdClassProps> = ({ seats, isAdult, coach_id
   };
 
   return (
-    <div className={classes.third}>
-      {allSeats.map((seat) => (
+    <div className={classes.first}>
+        <div className={classes.places}>
+           {allSeats.map((seat) => (
+        <div className={`${classes.place} ${classes[`first-${seat.index}`]}`}>
         <Seat
           key={seat.index}
           seatNumber={seat.index}
           isAvailable={seat.available}
           isSelected={selectedSeats.includes(seat.index)}
-          carType={"third"}
-          isAdult={isAdult}
+          carType={"first"}
           coach_id={coach_id}
+          isAdult={isAdult}
           directionType={directionType}
           price={price}
           onClick={() => handleSeatClick(seat.index)}
-        />
-      ))}
+        /></div>
+      ))}  
+        </div>
+     <div className={classes.number}>{coach_name}</div>
+     <div className={classes.info}>11 человек выбирают места в этом поезде</div>
     </div>
   );
 };

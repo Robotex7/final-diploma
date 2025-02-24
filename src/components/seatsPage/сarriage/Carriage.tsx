@@ -39,14 +39,12 @@ export const Carriage: React.FC<CarriageProps> = ({
   const seatData = type === "туда" ? to : back;
 
   const handleReturn = () => {
-    dispatch(clearSelectedSeats()); // Сбросьте выбранные места в Redux
+    dispatch(clearSelectedSeats());
     onReturn();
   };
 
   useEffect(() => {
-    // Здесь вы можете выполнить действия при изменении seats
     console.log("Seats have changed:", seats);
-    // Например, если вы хотите сбросить выбранные места при изменении списка мест
     dispatch(clearSelectedSeats());
   }, [seats, dispatch]);
 

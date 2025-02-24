@@ -6,7 +6,6 @@ import {
 
 import { City } from "../../types/SearchOptions";
 
-// Тип состояния для городов
 interface CitiesState {
   fromCity: City; // Город отправления
   toCity: City; // Город прибытия
@@ -14,10 +13,9 @@ interface CitiesState {
   destinationSuggestions: City[]; // Подсказки городов прибытия
   loadingFromCity: boolean; // Состояние загрузки для отправления
   loadingToCity: boolean; // Состояние загрузки для прибытия
-  error: string | null; // Ошибка
+  error: string | null;
 }
 
-// Начальное состояние
 const initialState: CitiesState = {
   fromCity: { name: "", _id: "" },
   toCity: { name: "", _id: "" },
@@ -48,6 +46,11 @@ const citiesSlice = createSliceWithThunk({
     ),
     setToCity: create.reducer((state, action: PayloadAction<City>) => {
       state.toCity = action.payload;
+    }),
+
+    clearCities: create.reducer((state) => {
+      state.fromCity = { name: "", _id: "" }; // Сброс значения fromCity
+      state.toCity = { name: "", _id: "" }; // Сброс значения toCity
     }),
 
     clearSuggestions: create.reducer((state) => {
@@ -136,5 +139,5 @@ const citiesSlice = createSliceWithThunk({
 
 });
 
-export const { setFromCity, setToCity, clearSuggestions, fetchDepartureSuggestions, fetchDestinationSuggestions, swapCities } = citiesSlice.actions;
+export const { setFromCity, setToCity, clearCities, clearSuggestions, fetchDepartureSuggestions, fetchDestinationSuggestions, swapCities } = citiesSlice.actions;
 export default citiesSlice.reducer;

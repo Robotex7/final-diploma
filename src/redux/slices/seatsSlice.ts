@@ -20,7 +20,6 @@ const initialState: SeatsState = {
   selectedCoachBack: [],
 };
 
-// Асинхронное действие для загрузки мест "туда"
 export const fetchSeatsTo = createAsyncThunk(
   "seats/fetchSeatsTo",
   async (id: string, { getState }) => {
@@ -34,7 +33,16 @@ export const fetchSeatsTo = createAsyncThunk(
           .filter(([, value]) => value === true)
           .map(([key]) => [key, "true"])
       ),
-    }).toString();
+    }).toString(); 
+    
+    // или Формируем строку запроса
+    //       const query = new URLSearchParams(
+    //           Object.entries(filters).reduce((acc, [key, value]) => {
+    //             acc[key] = value.toString(); // Явное преобразование значений
+    //             return acc;
+    //           }, {} as Record<string, string>)
+    //         ).toString();
+    //console.log(`https://students.netoservices.ru/fe-diplom/routes/${id}/seats?${query}`)
 
     const response = await fetch(
       `https://students.netoservices.ru/fe-diplom/routes/${id}/seats?${query}`
@@ -46,7 +54,6 @@ export const fetchSeatsTo = createAsyncThunk(
   }
 );
 
-// Асинхронное действие для загрузки мест "обратно"
 export const fetchSeatsBack = createAsyncThunk(
   "seats/fetchSeatsBack",
   async (id: string, { getState }) => {
@@ -83,7 +90,7 @@ const seatsSlice = createSlice({
       state.selectedCoachTo = [];
       state.selectedCoachBack = [];
     },
-    // Теперь сохраняем не строку, а объект вагона
+   
     selectCoachTo(state, action: PayloadAction<Seats>) {
       const exists = state.selectedCoachTo.some(coach => coach.coach.name === action.payload.coach.name);
       if (!exists) {
@@ -139,54 +146,3 @@ const seatsSlice = createSlice({
 export const { clearSeats, selectCoachTo, selectCoachBack } = seatsSlice.actions;
 
 export default seatsSlice.reducer;
-
-
-// export const fetchSeatsTo = createAsyncThunk(
-//     "seats/fetchSeatsTo",
-//     async (id: string, { getState }) => {
-//       const state = getState() as RootState;
-//       const filters = state.filterCarriages.filtersTo;
-  
-//       // Формируем строку запроса
-//       const query = new URLSearchParams(
-//           Object.entries(filters).reduce((acc, [key, value]) => {
-//             acc[key] = value.toString(); // Явное преобразование значений
-//             return acc;
-//           }, {} as Record<string, string>)
-//         ).toString();
-  
-//         console.log(`https://students.netoservices.ru/fe-diplom/routes/${id}/seats?${query}`)
-  
-//       const response = await fetch(
-//         `https://students.netoservices.ru/fe-diplom/routes/${id}/seats?${query}`
-//       );
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch seats to");
-//       }
-//       return await response.json();
-//     }
-//   );
-  
-//   // Асинхронное действие для загрузки мест "обратно"
-//   export const fetchSeatsBack = createAsyncThunk(
-//     "seats/fetchSeatsBack",
-//     async (id: string, { getState }) => {
-//       const state = getState() as RootState;
-//       const filters = state.filterCarriages.filtersBack;
-  
-//       const query = new URLSearchParams(
-//           Object.entries(filters).reduce((acc, [key, value]) => {
-//             acc[key] = value.toString(); // Явное преобразование значений
-//             return acc;
-//           }, {} as Record<string, string>)
-//         ).toString();
-  
-//       const response = await fetch(
-//         `https://students.netoservices.ru/fe-diplom/routes/${id}/seats?${query}`
-//       );
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch seats back");
-//       }
-//       return await response.json();
-//     }
-//   );
