@@ -1,58 +1,35 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Deploy to GitHub Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ['main']
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches:
+      - main  # или другая ветка, откуда идет сборка
   workflow_dispatch:
 
-# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow one concurrent deployment
-concurrency:
-  group: 'pages'
-  cancel-in-progress: true
+  contents: write
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Set up Node
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'npm'
+
       - name: Install dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
-        env:
-          APP_BASE_PATH: ${{ secrets.APP_BASE_PATH }}
-          APP_METRIKA_ID: ${{ secrets.APP_METRIKA_ID }}
-      - name: Install coi service worker
-        run: |
-          cp node_modules/coi-serviceworker/coi-serviceworker.min.js dist/
-          sed -i 's#\(<!-- coi -->\)#<script src="/coi-serviceworker.min.js"></script>#g' dist/index.html
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload dist repository
-          path: './dist'
+        run: npm install  # или другой пакетный менеджер (yarn, pnpm)
+
+      - name: Build project
+        run: npm run build  # если команда другая, укажи свою
+
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # Ветка, куда выкладывать файлы
+          folder: build  # Указываем папку сборки (например, dist, public и т. д.)
