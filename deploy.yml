@@ -3,33 +3,34 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # или другая ветка, откуда идет сборка
-  workflow_dispatch:
+      - main
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install  # или другой пакетный менеджер (yarn, pnpm)
+        run: npm ci
 
       - name: Build project
-        run: npm run build  # если команда другая, укажи свою
+        run: npm run build
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Deploy to GitHub Pages 
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          branch: gh-pages  # Ветка, куда выкладывать файлы
-          folder: build  # Указываем папку сборки (например, dist, public и т. д.)
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
