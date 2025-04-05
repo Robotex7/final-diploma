@@ -3,6 +3,6 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "https://lunalexandra.github.io/final-1/",
+  base: "https://github.com/Robotex7/final-diploma",
   plugins: [react()],
 })
