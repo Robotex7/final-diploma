@@ -1,27 +1,23 @@
-import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider, /*Form*/ } from 'react-router-dom';
-import { HomePage, TrainPage, PassengersPage, PaymentPage, ConfirmationPage, ThankYouPage} from './pages';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HomePage, TrainPage, PassengersPage, PaymentPage, ConfirmationPage, ThankYouPage } from './pages';
 import { Layout } from './components/layout';
 
 import "./App.css";
 
 export default function App() {
-  const routes = createBrowserRouter(
-    createRoutesFromElements(
-      <Route path="/" element={<Layout />}>
-        <Route path="/" index element={<HomePage />} />
-        <Route path="/trains" element={<TrainPage />} />
-        <Route path="/passengers" element={<PassengersPage />} />
-        <Route path="/payment" element={<PaymentPage />} />
-        <Route path="/order" element={<ConfirmationPage />} />
-        <Route path="/completion" element={<ThankYouPage />} />
-        {/*
-        <Route path="*" element={<NotFound />} /> */}
-      </Route>
-    ),
-    { basename: '/final-diploma' }
-  );
-
   return (
-    <RouterProvider router={routes} />
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="trains" element={<TrainPage />} />
+          <Route path="passengers" element={<PassengersPage />} />
+          <Route path="payment" element={<PaymentPage />} />
+          <Route path="order" element={<ConfirmationPage />} />
+          <Route path="completion" element={<ThankYouPage />} />
+          {/* <Route path="*" element={<NotFound />} /> */}
+        </Route>
+      </Routes>
+    </Router>
   );
 }
