@@ -18,3 +18,4 @@ export function Menu() {
       </ul>
     </nav>
   );
+}

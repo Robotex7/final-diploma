@@ -18,4 +18,4 @@ export const Header: React.FC<HeaderProps> = ({ background, children }) => {
       {children}
     </header>
   );
-};
+}
