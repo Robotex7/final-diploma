@@ -1,12 +1,11 @@
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import { HomePage, TrainPage, PassengersPage, PaymentPage, ConfirmationPage, ThankYouPage } from './pages';
-import { Layout } from './components/layout';
+  import { Routes, Route } from 'react-router-dom';
+  import { HomePage, TrainPage, PassengersPage, PaymentPage, ConfirmationPage, ThankYouPage } from './pages';
+  import { Layout } from './components/layout';
 
-import "./App.css";
+  import "./App.css";
 
-export default function App() {
-  return (
-    <Router>
+  export default function App() {
+    return (
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
@@ -18,6 +17,5 @@ export default function App() {
           {/* <Route path="*" element={<NotFound />} /> */}
         </Route>
       </Routes>
-    </Router>
-  );
-}
+    );
+  }
